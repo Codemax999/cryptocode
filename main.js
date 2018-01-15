@@ -291,7 +291,6 @@ class View {
         <td>$${x.price.toLocaleString()}</td>
         <td>${x.totalSupply.toLocaleString()}</td>
         <td>${x.circulation.toLocaleString()}</td>
-        <td>${x.remainingCount.toLocaleString()}</td>
         <td>${x.remainingPercent}%</td>
         <td>$${x.marketCap.toLocaleString()}</td>
         <td class="${x.oneHour < 0 ? 'text-error' : 'text-success'}">${x.oneHour}%</td>
