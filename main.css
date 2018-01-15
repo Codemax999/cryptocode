@@ -42,6 +42,10 @@ body {
 
 
 /* Table */
+.table-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
 thead {
   position: sticky;
 }
