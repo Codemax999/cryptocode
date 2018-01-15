@@ -104,7 +104,7 @@ class Controller {
   filterFull(sort, rank) {
 
     // determine filter
-    let filter;
+    let filter
     if (sort === 'Low Price & Low Total Supply') filter = this.model.sortCheapestLowSupply()
     else if (sort === 'Low Price & Low Remaining Supply') filter = this.model.sortCheapestLowRemaining()
     else if (sort === 'Lowest Price') filter = this.model.sortPrice()
@@ -438,16 +438,6 @@ class Utility {
     return new Promise(resolve => {
 
       const sort = coins.sort((a, b) => a.price - b.price)
-      resolve(sort)
-    })
-  }
-
-  static sortByPriceDesc(coins) {
-
-    // by price descending
-    return new Promise(resolve => {
-
-      const sort = coins.sort((a, b) => b.price - a.price)
       resolve(sort)
     })
   }
