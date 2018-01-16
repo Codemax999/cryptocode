@@ -105,11 +105,13 @@ class Controller {
 
     // determine filter
     let filter
-    if (sort === 'Low Price & Low Total Supply') filter = this.model.sortCheapestLowSupply()
-    else if (sort === 'Low Price & Low Remaining Supply') filter = this.model.sortCheapestLowRemaining()
-    else if (sort === 'Lowest Price') filter = this.model.sortPrice()
-    else if (sort === 'Lowest Total Supply') filter = this.model.sortTotalSupply()
-    else if (sort === 'Lowest Remaining Supply') filter = this.model.sortRemaining()
+    filter = sort === 'Low Price & Low Total Supply' ? this.model.sortCheapestLowSupply() : filter
+    filter = sort === 'Low Price & Low Remaining Supply' ? this.model.sortCheapestLowRemaining() : filter
+    filter = sort === 'Lowest Price' ? this.model.sortPrice() : filter
+    filter = sort === 'Lowest Total Supply' ? this.model.sortTotalSupply() : filter
+    filter = sort === 'Lowest Remaining Supply' ? this.model.sortRemaining() : filter
+    filter = sort === 'Largest Market Cap' ? this.model.sortMarketCap() : filter
+
 
     // clear previous results -> filter -> displau
     Utility.clearTable()
@@ -204,6 +206,16 @@ class Model {
     return new Promise(resolve => {
 
       Utility.sortByTotalSupplyAsc(Model.coins)
+        .then(res => resolve(res))
+    })
+  }
+
+  sortMarketCap() {
+
+    // largest market cap
+    return new Promise(resolve => {
+
+      Utility.sortByTotalMarketDesc(Model.coins)
         .then(res => resolve(res))
     })
   }
@@ -457,6 +469,16 @@ class Utility {
     return new Promise(resolve => {
 
       const sort = coins.sort((a, b) => a.totalSupply - b.totalSupply)
+      resolve(sort)
+    })
+  }
+
+  static sortByTotalMarketDesc(coins) {
+
+    // total market cap
+    return new Promise(resolve => {
+
+      const sort = coins.sort((a, b) => b.marketCap - a.marketCap)
       resolve(sort)
     })
   }
