@@ -51,12 +51,24 @@ class Controller {
     const sort = document.querySelector('.type').value
     const filter = document.querySelector('.rank').value
 
+    let headers = new Headers()
+
+    headers.append('Content-Type', 'application/json')
+    headers.append('Accept', 'application/json')
+    headers.append('Access-Control-Allow-Origin', 'https://codemax999.github.io/cryptocode')
+    headers.append('GET', 'POST', 'OPTIONS')
+  
+
     // default sorted by lowest price
-    fetch('https://api.coinmarketcap.com/v1/ticker/?limit=500')
-      .then(res => res.json())
-      .then(this.model.processData)
-      .then(() => this.filterFull(sort, filter))
-      .catch(console.error)
+    const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?CMC_PRO_API_KEY=e6526e3c-38f7-4582-8a64-3414281ed6a4'
+    fetch(url, {
+      method: 'GET',
+      headers
+    })
+    .then(res => res.json())
+    .then(this.model.processData)
+    .then(() => this.filterFull(sort, filter))
+    .catch(console.error)
   }
 
   eventListeners() {
@@ -148,7 +160,7 @@ class Model {
       data.map((x, i) => {
 
         // circulating, total and remaining coin supply
-        const circ = x.available_supply
+        const circ = x.circulating_supply
         const total = x.max_supply === null ? x.total_supply : x.max_supply
         const remain = total - circ
         const remainOne = total - remain
@@ -164,11 +176,11 @@ class Model {
           Number(total),
           remain,
           remainPercent.toFixed(3),
-          Number(x.price_usd),
-          Number(x.market_cap_usd),
-          Number(x.percent_change_1h),
-          Number(x.percent_change_24h),
-          Number(x.percent_change_7d),
+          Number(x.quote.USD.price),
+          Number(x.quote.USD.market_cap),
+          Number(x.quote.USD.percent_change_1h),
+          Number(x.quote.USD.percent_change_24h),
+          Number(x.quote.USD.percent_change_7d),
         )
 
         // update array
