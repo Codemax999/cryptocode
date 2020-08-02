@@ -51,24 +51,29 @@ class Controller {
     const sort = document.querySelector('.type').value
     const filter = document.querySelector('.rank').value
 
-    let headers = new Headers()
+    const requestOptions = {
+      method: 'GET',
+      uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+      qs: {
+        start: 1,
+        limit: 5000,
+        convert: 'USD'
+      },
+      headers: {
+        'X-CMC_PRO_API_KEY': 'e6526e3c-38f7-4582-8a64-3414281ed6a4',
+      },
+      json: true,
+      gzip: true
+    }
 
-    headers.append('Content-Type', 'application/json')
-    headers.append('Accept', 'application/json')
-    headers.append('Access-Control-Allow-Origin', 'https://codemax999.github.io/cryptocode')
-    headers.append('GET', 'POST', 'OPTIONS')
-  
+    const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=BTC'
 
     // default sorted by lowest price
-    const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?CMC_PRO_API_KEY=e6526e3c-38f7-4582-8a64-3414281ed6a4'
-    fetch(url, {
-      method: 'GET',
-      headers
-    })
-    .then(res => res.json())
-    .then(this.model.processData)
-    .then(() => this.filterFull(sort, filter))
-    .catch(console.error)
+    fetch(url, requestOptions)
+      .then(res => res.json())
+      .then(this.model.processData)
+      .then(() => this.filterFull(sort, filter))
+      .catch(console.error)
   }
 
   eventListeners() {
